@@ -13,7 +13,7 @@ def main():
     st.set_page_config(page_title="MyGPT", layout="wide")
     
     # 탭 생성
-    tab1, tab2, tab3, tab4 = st.tabs(["음성 챗", "일반 챗", "자료 챗"])
+    tab1, tab2 = st.tabs(["음성 챗", "일반 챗", "자료 챗"])
     
     with tab1:
         st.header("🎙️ 음성 챗")
@@ -123,24 +123,24 @@ def main():
             # UI 업데이트
             st.rerun()
 
-
-    with tab3:
-        st.write('데이터베이스 기반의 챗봇 질의응답을 지원합니다.')
-        user_input = st.text_input('자료를 업로드하고, 자료와 관련된 질문을 아래에 입력하세요.', key='db_input')
+#클라우드 배포는 tab2까지..
+    # with tab3:
+    #     st.write('데이터베이스 기반의 챗봇 질의응답을 지원합니다.')
+    #     user_input = st.text_input('자료를 업로드하고, 자료와 관련된 질문을 아래에 입력하세요.', key='db_input')
         
-        radio_button = st.radio('답변에 DATABASE 활용 선택', ['사용함', '사용하지 않음'])
+    #     radio_button = st.radio('답변에 DATABASE 활용 선택', ['사용함', '사용하지 않음'])
 
-        disabled_status = radio_button == '사용하지 않음'
+    #     disabled_status = radio_button == '사용하지 않음'
 
-        options = st.selectbox("데이터베이스 테이블명을 선택하세요", 
-                           ['finance', 'life', 'stocks'], 
-                           disabled=disabled_status)
+    #     options = st.selectbox("데이터베이스 테이블명을 선택하세요", 
+    #                        ['finance', 'life', 'stocks'], 
+    #                        disabled=disabled_status)
 
-        if st.button("전송", key='senddbkey') and user_input.strip():
-            response = requests.post(url = f"http://127.0.0.1:8000/db", 
-                                    json = {'inputs':user_input, 'dbtable': str(options)})
+    #     if st.button("전송", key='senddbkey') and user_input.strip():
+    #         response = requests.post(url = f"http://127.0.0.1:8000/db", 
+    #                                 json = {'inputs':user_input, 'dbtable': str(options)})
 
-            st.write(response.json())
+    #         st.write(response.json())
 
 
 def recognize_speech():
