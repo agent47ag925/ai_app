@@ -13,7 +13,7 @@ def main():
     st.set_page_config(page_title="MyGPT", layout="wide")
     
     # 탭 생성
-    tab1, tab2 = st.tabs(["음성 챗", "일반 챗", "자료 챗"])
+    tab1, tab2 = st.tabs(["음성 챗", "일반 챗"])
     
     with tab1:
         st.header("🎙️ 음성 챗")
