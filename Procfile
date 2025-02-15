@@ -1,1 +1,1 @@
-worker: python ./main.py
+worker: streamlit run ./main.py
