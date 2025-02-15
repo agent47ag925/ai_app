@@ -98,32 +98,32 @@ def main_app():
     #3. fastapi와 라우팅
     # send_cliked = 사용자가 '보내기'를 눌렀을 때 
     # user_input.strip() = 실제로 텍스트 박스에 str있을 때때
-    if send_clicked and user_input.strip() :
-        st.session_state.main_chat.append({'sender':'user', 'text':user_input})
+    # if send_clicked and user_input.strip() :
+    #     st.session_state.main_chat.append({'sender':'user', 'text':user_input})
 
-        #match-case
-        match mode:
-            case '음성 채팅':
-                pass
+    #     #match-case
+    #     match mode:
+    #         case '음성 채팅':
+    #             pass
 
-            case '비주얼 채팅':
-                pass 
+    #         case '비주얼 채팅':
+    #             pass 
 
-            case '일반 채팅':
-                #fastapi 의 정해진 포트에 신호를 보냄
-                #post로 전달됨.
-                #data = json.dumps({'inputs':user_input, 'history':[]})
-                #fastapi에서 데이터를 받아 줄 때 '정해진 형식'
-                response = requests.post(url = f"http://127.0.0.1:8000/chat", 
-                                         data = json.dumps({'inputs':user_input, 'history':[]}))       
+    #         case '일반 채팅':
+    #             #fastapi 의 정해진 포트에 신호를 보냄
+    #             #post로 전달됨.
+    #             #data = json.dumps({'inputs':user_input, 'history':[]})
+    #             #fastapi에서 데이터를 받아 줄 때 '정해진 형식'
+    #             response = requests.post(url = f"http://127.0.0.1:8000/chat", 
+    #                                      data = json.dumps({'inputs':user_input, 'history':[]}))       
                 
-                #print(response -> <200>)
-                st.write(f"{response.json()}")
+    #             #print(response -> <200>)
+    #             st.write(f"{response.json()}")
                 
-                st.session_state.main_chat.append({'sender':'bot', 'text':response.json()})
+    #             st.session_state.main_chat.append({'sender':'bot', 'text':response.json()})
 
-    #streamlit의 화면을 재렌더링
-    st.rerun()
+    # #streamlit의 화면을 재렌더링
+    # st.rerun()
 
 
 
