@@ -4,13 +4,19 @@
 #이 fastapi 파일을 단독으로 실행하기 위한 코드
 #uvicorn 파일이름:앱이름 --리로드옵션션
 #uvicorn fastapp:app --reload
-
 from fastapi import FastAPI
+from fastapi import File, UploadFile, Form, Depends
 from pydantic import BaseModel #인풋데이터의 형식을 고정정
+from typing import Optional
 #BaseModel 상속후, 내 모델을 만듦 -> 내 모델이 인풋의 형식 고정정
 
 #랭체인으로 답변을 받을 수 있도록 모듈화 코드를 가지고 옴
 import LangModule as LM
+
+#데이터베이스의 내용을 가져올 수 있도록
+import LocalDB as DB
+
+import shutil
 
 #일반적인 채팅 형태의 인풋이 들어오는 경우
 class user_input(BaseModel):
@@ -21,20 +27,18 @@ class user_input(BaseModel):
 class user_attach(BaseModel):
     inputs : str    #사용자가 쿼리한 내용
     extension : str #첨부된 파일의 확장자
-    attached : str  #변환한 내용
+    dbuse : str    #DB를 활용한 챗을 진행할지 여부
 
 #음성채팅을 입력한 경우
 class user_voice(BaseModel):
     inputs : str    #사용자가 쿼리한 내용
 
-class simple(BaseModel):
-    text : str
-    
-app = FastAPI()
+    #데이터베이스를 사용하는 경우
+class user_db(BaseModel):
+    inputs : str    #사용자가 쿼리한 내용
+    dbtable : Optional[str]
 
-@app.post('/normal')
-async def normal(inputs:simple):
-    print(inputs.text)
+app = FastAPI()
 
 #일반채팅
 @app.post('/chat')
@@ -48,20 +52,46 @@ def chat(input:user_input):
     print("REST RETURN :" , response)
     return response
 
-
 #첨부파일을 가지고 있는 채팅
 @app.post('/attached')
-def attached(input:user_attach):
-    #그림 파일 일때를 분리
-    if input.extension == '.jpg' or input.extension == '.png':
-        LM.picture_chat(input.inputs, input.attached)
+async def attached(inputs: str = Form(...),
+    extension: str = Form(...),
+    files: Optional[UploadFile] = File(None)):
+
+    try:
+        file_content = await files.read()
+        print("FFF", file_content)
     
-    #pdf파일 일때를 분리
+    except Exception as e:
+        print(f"에러 발생 : {str(e)}")
+
+    finally:
+                #그림 파일 일때를 분리
+        if extension == 'txt':
+            response = LM.rag_chat(inputs, file_content.decode('utf-8'), 'txt')
+        
+        else:
+            response = LM.rag_chat(inputs, file_content, 'rag')
+
+    #print(response)
+    return response
+
+@app.post('/db')
+def db(inputs:user_db):
+    print(inputs.inputs)
+    print(inputs.dbtable)
+
+    if inputs.dbtable == None:
+        response = LM.default_chat(inputs.inputs)
     else:
-        LM.rag_chat(input.inputs, input.attached)
+        response = LM.db_chat(inputs.inputs, inputs.dbtable)
+        response = response['output']
+
+    return response
 
 
 #음성채팅
 @app.post('/voice')
 def voice(input:user_voice):
-    pass
+    response = LM.default_chat(input.inputs)
+    return response
