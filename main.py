@@ -116,6 +116,7 @@ def main():
                                     data=json.dumps({'inputs': user_input, 'history': []}))
 
             # 응답 받아오기
+            st.write(response)
             bot_response = response.json()
 
             # 채팅 기록 저장
