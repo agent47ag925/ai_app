@@ -112,7 +112,7 @@ def main():
         user_input = st.text_input("메시지를 입력하세요:", key="chat_input")
 
         if st.button("전송") and user_input.strip():
-            response = requests.post(url="{FASTAPI_URL}/chat", 
+            response = requests.post(url=f"{FASTAPI_URL}/chat", 
                                     data=json.dumps({'inputs': user_input, 'history': []}))
 
             # 응답 받아오기
