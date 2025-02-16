@@ -101,4 +101,4 @@ def voice(input:user_voice):
 #헤로쿠 배포 시 이슈 있어서 진입점을 따로 만듦듦
 if __name__ == '__main__':
     port = int(os.environ.get('API_PORT', 8001))
-    uvicorn.run(app, port=8000)
+    uvicorn.run(app, host='0.0.0.0', port=port)

@@ -22,7 +22,7 @@ def main():
         if st.button("🎤 음성 입력 시작"):
             user_input = recognize_speech()  # 음성 인식W
     
-            response = requests.post(url = f"http://127.0.0.1:8001/voice", 
+            response = requests.post(url = f"http://0.0.0.0:8001/voice", 
                                         data = json.dumps({'inputs':user_input}))       
             
             #print(response -> <200>)
@@ -110,7 +110,7 @@ def main():
         user_input = st.text_input("메시지를 입력하세요:", key="chat_input")
 
         if st.button("전송") and user_input.strip():
-            response = requests.post(url="http://127.0.0.1:8001/chat", 
+            response = requests.post(url="http://0.0.0.0:8001/chat", 
                                     data=json.dumps({'inputs': user_input, 'history': []}))
 
             # 응답 받아오기
