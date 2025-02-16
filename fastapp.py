@@ -4,6 +4,7 @@
 #이 fastapi 파일을 단독으로 실행하기 위한 코드
 #uvicorn 파일이름:앱이름 --리로드옵션션
 #uvicorn fastapp:app --reload
+import uvicorn
 from fastapi import FastAPI
 from fastapi import File, UploadFile, Form, Depends
 from pydantic import BaseModel #인풋데이터의 형식을 고정정
@@ -95,3 +96,7 @@ def db(inputs:user_db):
 def voice(input:user_voice):
     response = LM.default_chat(input.inputs)
     return response
+
+#헤로쿠 배포 시 이슈 있어서 진입점을 따로 만듦듦
+if __name__ == '__main__':
+    uvicorn.run(app, port=8000)
