@@ -9,6 +9,8 @@ import requests #fastapi와 streamlit을 합치기 위한 requests(내부에서 
 #음성인식라이브러리 추가
 import speech_recognition as sr  # 음성 인식을 위한 라이브러리
 
+FASTAPI_URL = os.environ.get("FASTAPI_URL", "https://lang-aiapp-62153d75c959.herokuapp.com")
+
 def main():
     st.set_page_config(page_title="MyGPT", layout="wide")
     
@@ -22,7 +24,7 @@ def main():
         if st.button("🎤 음성 입력 시작"):
             user_input = recognize_speech()  # 음성 인식W
     
-            response = requests.post(url = f"http://0.0.0.0:8001/voice", 
+            response = requests.post(url = f"{FASTAPI_URL}/voice", 
                                         data = json.dumps({'inputs':user_input}))       
             
             #print(response -> <200>)
@@ -110,7 +112,7 @@ def main():
         user_input = st.text_input("메시지를 입력하세요:", key="chat_input")
 
         if st.button("전송") and user_input.strip():
-            response = requests.post(url="http://0.0.0.0:8001/chat", 
+            response = requests.post(url="{FASTAPI_URL}/chat", 
                                     data=json.dumps({'inputs': user_input, 'history': []}))
 
             # 응답 받아오기
