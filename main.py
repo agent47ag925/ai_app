@@ -9,7 +9,7 @@ import requests #fastapi와 streamlit을 합치기 위한 requests(내부에서 
 #음성인식라이브러리 추가
 import speech_recognition as sr  # 음성 인식을 위한 라이브러리
 
-FASTAPI_URL = os.environ.get("FASTAPI_URL", "https://lang-aiapp-62153d75c959.herokuapp.com")
+FASTAPI_URL = os.environ.get("FASTAPI_URL", "https://lang-backend-d0e71d3434e0.herokuapp.com/")
 
 def main():
     st.set_page_config(page_title="MyGPT", layout="wide")
